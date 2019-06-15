@@ -24,9 +24,23 @@ class TripView( ListAPIView ):
       description: list of fields to show separate by ,
       required: false
       paramType: Integer
+    - name: status
+      description: status of trip
+      required: false
+      paramType: String
+      choices: ['onWay','near','started']
     """
     serializer_class = TripSerializer
-    queryset = Trip.objects.all()
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the trips
+        with a status selected.
+        """
+        if (self.request.query_params.get('status')):
+            return Trip.objects(status=self.request.query_params.get('status'))
+        
+        return Trip.objects.all()
 
 
 # Create your views here.
