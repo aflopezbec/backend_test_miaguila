@@ -17,7 +17,11 @@ class TripView( ListAPIView ):
       required: false
       paramType: Integer
     - name: offset
-      description: number the initial element
+      description: number the initial element in page
+      required: false
+      paramType: Integer
+    - name: fields
+      description: list of fields to show separate by ,
       required: false
       paramType: Integer
     """
