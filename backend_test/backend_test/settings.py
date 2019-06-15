@@ -121,3 +121,9 @@ STATIC_URL = '/static/'
 
 # Mongodb connection config
 mongoengine.connect('miaguila') # database name
+
+# rest_framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 50,     
+}
