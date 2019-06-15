@@ -19,6 +19,7 @@ from django.urls import path, include
 from backend_test.trips.urls import apiTripsPatterns
 
 handler404 = 'backend_test.trips.views.handler404'
+handler500 = 'backend_test.trips.views.handler500'
 
 urlpatterns = [
     path('api/v1/', include(apiTripsPatterns)),

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
+from django.template import RequestContext
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -44,17 +45,27 @@ class TripView( ModelViewSet ):
         with a status selected.
         """
         queryset = None  
+        status_response = None
         if (self.request.query_params.get('status')):
             queryset =  Trip.objects(status=self.request.query_params.get('status'))
+            if queryset.count() == 0:
+                status_response = status.HTTP_204_NO_CONTENT
         else:
             queryset = Trip.objects.all()
+
         queryset = self.filter_queryset(queryset)
         page = self.paginate_queryset(queryset)
+
+        if not status_response:
+            status_response = status.HTTP_200_OK
+
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
+
         serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(serializer.data, status=status_response)
 
 # Create your views here.
 @api_view(["GET"])
@@ -89,3 +100,9 @@ def countTrips(request):
 
 def handler404(request, exception):
     return JsonResponse({'Message':'Page not found', 'status': status.HTTP_404_NOT_FOUND}, status=404)
+
+def handler500(request, *args, **argv):
+    context = RequestContext(request)
+    context['Message'] = 'Error in server'
+    context['status'] = status.HTTP_500_INTERNAL_SERVER_ERROR
+    return JsonResponse(context, status=500)
