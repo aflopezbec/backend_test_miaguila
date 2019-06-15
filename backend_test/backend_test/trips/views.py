@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework.generics import ListAPIView
+from rest_framework_mongoengine.viewsets import ModelViewSet
 from backend_test.trips.serializers import TripSerializer
 
 from backend_test.trips.models import Trip
 
 
-class TripView( ListAPIView ):
+class TripView( ModelViewSet ):
     """
     Endpoint to see the trips list
     ---
@@ -30,18 +30,28 @@ class TripView( ListAPIView ):
       paramType: String
       choices: ['onWay','near','started']
     """
+    lookup_field = 'id'
     serializer_class = TripSerializer
+    queryset = Trip.objects.all()
+    http_method_names = ['get', 'post', 'put']
 
-    def get_queryset(self):
+    def list(self, request, **kwargs):
         """
         This view should return a list of all the trips
         with a status selected.
         """
+        queryset = None  
         if (self.request.query_params.get('status')):
-            return Trip.objects(status=self.request.query_params.get('status'))
-        
-        return Trip.objects.all()
-
+            queryset =  Trip.objects(status=self.request.query_params.get('status'))
+        else:
+            queryset = Trip.objects.all()
+        queryset = self.filter_queryset(queryset)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 # Create your views here.
 @api_view(["GET"])
