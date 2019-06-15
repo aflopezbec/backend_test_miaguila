@@ -1,8 +1,16 @@
 from django.urls import path
 from backend_test.trips.views import countTrips, TripView
+from rest_framework_mongoengine import routers
+
+router = routers.DefaultRouter()
+router.register(r'trips', TripView)
+
+urlpatterns = [
+]
+
+urlpatterns += router.urls
 
 apiTripsPatterns = ([
-    path('trips/', TripView.as_view() , name='trips-list'),
-    path('trips/count', countTrips , name='count_trips'),
+    path('trips/count', countTrips , name='count'),
 
-], 'api_trips')
+]+router.urls, 'api_trips')
