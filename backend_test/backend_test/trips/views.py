@@ -1,15 +1,35 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.generics import ListAPIView
+from backend_test.trips.serializers import TripSerializer
 
 from backend_test.trips.models import Trip
+
+
+class TripView( ListAPIView ):
+    """
+    Endpoint to see the trips list
+    ---
+    parameters:
+    - name: limit
+      description: count of trips by page
+      required: false
+      paramType: Integer
+    - name: offset
+      description: number the initial element
+      required: false
+      paramType: Integer
+    """
+    serializer_class = TripSerializer
+    queryset = Trip.objects.all()
 
 
 # Create your views here.
 @api_view(["GET"])
 def countTrips(request):
     """
-    Endpoint of return count trips
+    Endpoint to know the trip count
     ---
     parameters:
     - name: city
@@ -35,3 +55,5 @@ def countTrips(request):
             'count_trips': count_trips
         }
     )
+
+
