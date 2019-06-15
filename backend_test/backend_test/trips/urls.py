@@ -11,6 +11,6 @@ urlpatterns = [
 urlpatterns += router.urls
 
 apiTripsPatterns = ([
-    path('trips/count', countTrips , name='count'),
+    path('trips/count/', countTrips , name='count'),
 
 ]+router.urls, 'api_trips')
