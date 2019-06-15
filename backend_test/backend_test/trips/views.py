@@ -1,6 +1,9 @@
 from django.shortcuts import render
+from django.http import HttpResponse, JsonResponse
+
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework import status
 from rest_framework_mongoengine.viewsets import ModelViewSet
 from backend_test.trips.serializers import TripSerializer
 
@@ -51,7 +54,7 @@ class TripView( ModelViewSet ):
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
         serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 # Create your views here.
 @api_view(["GET"])
@@ -84,4 +87,5 @@ def countTrips(request):
         }
     )
 
-
+def handler404(request, exception):
+    return JsonResponse({'Message':'Page not found', 'status': status.HTTP_404_NOT_FOUND}, status=404)
