@@ -1,0 +1,400 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: "Mi Águila: Backend Test"
+  description: 'Documentación de API desarrollada para el cargo de Desarrollador backend de la empresa Mi Águila. El codigo asociado a este api se puede encontrar en [github.com/andreslopzi/backend_test_miaguila](https://github.com/andreslopzi/backend_test_miaguila)'
+  contact: {}
+host: 127.0.0.1:8000
+basePath: /api/v1
+schemes:
+- http
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /trips:
+    get:
+      description: ""
+      summary: 'Return list of trips'
+      tags:
+      - Trip
+      operationId: "listTrip"
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: limit
+        in: "query"
+        required: false
+        type: integer
+        description: 'Number of results to return per page.'
+      - name: offset
+        in: "query"
+        required: false
+        type: integer
+        description: 'The initial index from which to return the results.'
+      - name: fields
+        in: "query"
+        required: false
+        type: string
+        description: 'Fields comma separated '
+      - name: status
+        in: "query"
+        required: false
+        type: string
+        description: 'status of trip'
+        items:
+          type: "string"
+          enum:
+          - "near"
+          - "onWAy"
+          - "started"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Trip"
+    post:
+      description: ''
+      summary: 'Create a trip'
+      tags:
+      - Trip
+      operationId: TripsPost
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: "#/definitions/Trip"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Trip"
+        400:
+          description: "Bad Rsequest"
+          schema:
+            type: string
+            example: {detail: Error in the input information}
+        
+  /trips/{id}/:
+    get:
+      description: ""
+      summary: Get trip by id
+      tags:
+      - Trip
+      operationId: 5d05719bf010f466830faefe
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The id that needs to be fetched. Use 5d05719bf010f466830faefe for testing. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Trip"
+        404:
+          description: "Trip not found"
+    put:
+      description: ""
+      summary: 'Update trip'
+      tags:
+      - Trip
+      operationId: "updateTrip"
+      produces:
+      - application/json
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The id that needs to be update"
+        required: true
+        type: "string"
+      - name: data
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/Trip'
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Bad Rsequest"
+          schema:
+            type: string
+            example: {detail: Error in the input information}
+        404:
+          description: "Trip not found"
+  /trips/count:
+    get:
+      description: ''
+      summary: 'Obtain trip count'
+      tags:
+      - Trip
+      operationId: TripsCountGet
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: "city"
+        in: "query"
+        description: "name of city of trip"
+        required: false
+        type: "string"
+      - name: "country"
+        in: "query"
+        description: "name of country of trip"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: string
+            example: {'count':593}
+definitions:
+  Trip:
+    title: "Trip"
+    example:
+      status: started
+      check_code: 66
+      createdAt: '2019-01-25T19:03:53.251Z'
+      updatedAt: '2019-01-25T19:47:04.397Z'
+      price: 13800
+      driver_location:
+        type: Point
+        coordinates:
+        - -74.060176312923431
+        - 4.6695533023353732
+      start:
+        date: '2019-01-25T19:06:27.936Z'
+        pickup_address: 'Cl. 90 #19-41, Bogotá, Colombia'
+        pickup_location:
+          type: Point
+          coordinates:
+          - -74.056519199999997
+          - 4.6761958999999997
+      end:
+        date: ''
+        pickup_address: 'Ac. 100 #13-21, Bogotá, Colombia'
+        pickup_location:
+          type: Point
+          coordinates:
+          - -74.0465655
+          - 4.6830892000000004
+      country:
+        name: Colombia
+      city:
+        name: Bogotá
+      passenger:
+        first_name: Ricardo
+        last_name: Sarmiento
+      driver:
+        first_name: Julio Alberto
+        last_name: Mesa Rodriguez
+      car:
+        plate: ESM308
+    type: object
+    properties:
+      id:
+        type: string
+      status:
+        type: string
+        enum:
+        - near
+        - onWay
+        - started
+      check_code:
+        type: string
+      createdAt:
+        type: string
+        format: "date-time"
+      updatedAt:
+        type: string
+        format: "date-time"
+      price:
+        type: integer
+        format: int32
+      driver_location:
+        $ref: '#/definitions/DriverLocation'
+      start:
+        $ref: '#/definitions/Start'
+      end:
+        $ref: '#/definitions/End'
+      country:
+        $ref: '#/definitions/Country'
+      city:
+        $ref: '#/definitions/City'
+      passenger:
+        $ref: '#/definitions/Passenger'
+      driver:
+        $ref: '#/definitions/Driver'
+      car:
+        $ref: '#/definitions/Car'
+    required:
+    - status
+    - check_code
+    - createdAt
+    - updatedAt
+    - price
+    - driver_location
+    - start
+    - end
+    - country
+    - city
+    - passenger
+    - driver
+    - car
+  DriverLocation:
+    title: DriverLocation
+    example:
+      type: Point
+      coordinates:
+      - -74.060176312923431
+      - 4.6695533023353732
+    type: object
+    properties:
+      type:
+        type: string
+      coordinates:
+        type: array
+        items:
+          type: number
+          format: double
+    required:
+    - type
+    - coordinates
+  Start:
+    title: Start
+    example:
+      date: '2019-01-25T19:06:27.936Z'
+      pickup_address: 'Cl. 90 #19-41, Bogotá, Colombia'
+      pickup_location:
+        type: Point
+        coordinates:
+        - -74.056519199999997
+        - 4.6761958999999997
+    type: object
+    properties:
+      date:
+        type: string
+        format: "date-time"
+      pickup_address:
+        type: string
+      pickup_location:
+        $ref: '#/definitions/PickupLocation'
+    required:
+    - date
+    - pickup_address
+    - pickup_location
+  PickupLocation:
+    title: PickupLocation
+    example:
+      type: Point
+      coordinates:
+      - -74.056519199999997
+      - 4.6761958999999997
+    type: object
+    properties:
+      type:
+        type: string
+      coordinates:
+        type: array
+        items:
+          type: number
+          format: double
+    required:
+    - type
+    - coordinates
+  End:
+    title: End
+    example:
+      date: 
+      pickup_address: 'Ac. 100 #13-21, Bogotá, Colombia'
+      pickup_location:
+        type: Point
+        coordinates:
+        - -74.0465655
+        - 4.6830892000000004
+    type: object
+    properties:
+      date:
+        type: string
+        format: "date-time"
+      pickup_address:
+        type: string
+      pickup_location:
+        $ref: '#/definitions/PickupLocation'
+  Country:
+    title: Country
+    example:
+      name: Colombia
+    type: object
+    properties:
+      name:
+        type: string
+    required:
+    - name
+  City:
+    title: City
+    example:
+      name: Bogotá
+    type: object
+    properties:
+      name:
+        type: string
+    required:
+    - name
+  Passenger:
+    title: Passenger
+    example:
+      first_name: Ricardo
+      last_name: Sarmiento
+    type: object
+    properties:
+      first_name:
+        type: string
+      last_name:
+        type: string
+    required:
+    - first_name
+    - last_name
+  Driver:
+    title: Driver
+    example:
+      first_name: Julio Alberto
+      last_name: Mesa Rodriguez
+    type: object
+    properties:
+      first_name:
+        type: string
+      last_name:
+        type: string
+    required:
+    - first_name
+    - last_name
+  Car:
+    title: Car
+    example:
+      plate: ESM308
+    type: object
+    properties:
+      plate:
+        type: string
+    required:
+    - plate
+tags:
+- name: Trip
+  description: 'Information about of trips'
