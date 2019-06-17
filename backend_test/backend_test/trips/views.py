@@ -9,6 +9,7 @@ from rest_framework_mongoengine.viewsets import ModelViewSet
 from backend_test.trips.serializers import TripSerializer
 
 from backend_test.trips.models import Trip
+from mongoengine.errors import ValidationError
 
 
 class TripView( ModelViewSet ):
@@ -66,6 +67,34 @@ class TripView( ModelViewSet ):
         serializer = self.get_serializer(queryset, many=True)
 
         return Response(serializer.data, status=status_response)
+    
+
+    def validationTrip(self, id):
+      try:
+        trip = Trip.objects(id=id)
+        if not trip:
+          return JsonResponse(data = {
+            'error': 'trip not found',
+            'status': status.HTTP_404_NOT_FOUND
+          }, status=404)
+      except ValidationError:
+        print("Error")
+        return JsonResponse(data = {
+            'error': 'trip not found',
+            'status': status.HTTP_404_NOT_FOUND
+        }, status=404)
+      return None
+
+    def retrieve(self, request, id=None):
+      response_validation = self.validationTrip(id)
+      if response_validation: return response_validation
+      return super(TripView, self).retrieve(request)
+
+    def update(self, request, id=None):
+      response_validation = self.validationTrip(id)
+      if response_validation: return response_validation
+      return super(TripView, self).update(request)
+
 
 # Create your views here.
 @api_view(["GET"])
