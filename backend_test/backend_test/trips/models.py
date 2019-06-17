@@ -2,7 +2,7 @@ from mongoengine import Document, EmbeddedDocument, fields
 from django.core.exceptions import ValidationError
  
 class DateInput(EmbeddedDocument):
-    date = fields.DateTimeField()
+    date = fields.DateTimeField(null=True)
     pickup_address = fields.StringField()
     pickup_location = fields.PointField()
 
@@ -35,11 +35,3 @@ class Trip(Document):
     driver_location = fields.PointField()
 
     meta = {'collection': 'trips'}
-
-    def clean(self):
-        """Ensures that only published essays have a `pub_date` and
-        automatically sets `pub_date` if essay is published and `pub_date`
-        is not set"""
-        if self.updatedAt or self.createdAt or self.driver or self.passenger:
-            msg = 'updatedAt, createdAt, driver, passenger can not be null'
-            raise ValidationError(msg)
