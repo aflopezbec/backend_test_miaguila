@@ -134,4 +134,4 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 50,     
 }
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFileStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
