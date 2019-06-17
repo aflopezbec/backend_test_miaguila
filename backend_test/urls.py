@@ -18,9 +18,12 @@ from django.urls import path, include
 
 from backend_test.trips.urls import apiTripsPatterns
 
+from django.config import settings
+from django.config.urls.static import static
+
 handler404 = 'backend_test.trips.views.handler404'
 handler500 = 'backend_test.trips.views.handler500'
 
 urlpatterns = [
     path('api/v1/', include(apiTripsPatterns)),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
