@@ -120,7 +120,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Mongodb connection config
-mongoengine.connect('miaguila') # database name
+CONNECTION_STRING = 'mongodb://andres:andres@miaguila-shard-00-00-0czxg.mongodb.net:27017,miaguila-shard-00-01-0czxg.mongodb.net:27017,miaguila-shard-00-02-0czxg.mongodb.net:27017/miaguila?ssl=true&replicaSet=miaguila-shard-0&authSource=admin&retryWrites=true&w=majority'
+mongoengine.connect(host=CONNECTION_STRING, connect=False) # database name
 
 # rest_framework settings
 REST_FRAMEWORK = {
