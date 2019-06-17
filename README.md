@@ -61,7 +61,7 @@ Los métodos HTTP usados para cada petición son:
 5. Actualizar un viaje. [PUT]
 6. Consultar los viajes actuales. [GET]
 
-La documentación completa se puede encontrar en el archivo [sawgger.yaml](sawgger.yaml). Para ver la documentación basta con importar el archivo en [http://editor.swagger.io/](http://editor.swagger.io/).
+La documentación completa se puede encontrar en el archivo [swagger.yaml](swagger.yaml). Para ver la documentación basta con importar el archivo en [http://editor.swagger.io/](http://editor.swagger.io/).
 
 ## Consideraciones
 
