@@ -13,28 +13,6 @@ from mongoengine.errors import ValidationError
 
 
 class TripView( ModelViewSet ):
-    """
-    Endpoint to see the trips list
-    ---
-    parameters:
-    - name: limit
-      description: count of trips by page
-      required: false
-      paramType: Integer
-    - name: offset
-      description: number the initial element in page
-      required: false
-      paramType: Integer
-    - name: fields
-      description: list of fields to show separate by ,
-      required: false
-      paramType: Integer
-    - name: status
-      description: status of trip
-      required: false
-      paramType: String
-      choices: ['onWay','near','started']
-    """
     lookup_field = 'id'
     serializer_class = TripSerializer
     queryset = Trip.objects.all()
