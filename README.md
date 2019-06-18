@@ -9,9 +9,9 @@ Esta es una implementación API que cuenta con seis endpoints principales:
 5. Actualizar un viaje.
 6. Consultar los viajes actuales
 
-Esta api fue realizada con el framework Django de Python y se encuentra dentro de la carpeta [backend_test](backend_test).
+Esta api fue realizada con el framework Django de Python y se encuentra dentro de la carpeta [backend_test](backend_test). Su despliegue se puede encontrar en el siguiente enlace [https://miaguilabackendtest.herokuapp.com/api/v1/](https://miaguilabackendtest.herokuapp.com/api/v1/).
 
-Para su despliegue es necesario tener instalado python3 y mongodb en el sistema. En el caso de Ubuntu(linux) basta con ejecutar los siguientes comandos para su instalación:
+Si desea realizar el despliegue local del test es necesario tener instalado python3 y mongodb en el sistema. En el caso de Ubuntu(linux) basta con ejecutar los siguientes comandos para su instalación:
 
 ```
 sudo apt-get install python3.6
